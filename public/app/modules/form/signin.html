@@ -1,0 +1,33 @@
+<div class="wrapper1">
+
+
+  <form class="form-signin" ng-submit="signIn()">
+
+
+    <h2>Sign in with your account</h2>  <h2  style="color:{{resultColor}}" ng-bind="result"></h2>
+
+      <input placeholder="Email" id="icon_prefix" type="text" class="form-control" ng-model="email" ng-focus="is = false" required />
+     
+      <input placeholder="Password" id="password" type="password" class="form-control" ng-model="pass" ng-focus="is = false" required />
+     
+
+    
+
+      <button type="submit"  class="btn btn-lg btn-primary btn-block" ng-focus="is = true">Sign In</button>
+
+      <!-- <button type="button" class="btn waves-effect waves-light" ng-click="form1 = true">Signup</button>  -->
+    
+
+   
+
+   <div style="margin-top: 20px" ng-show="is" class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+      
+    </div>
+  </div>
+
+</form>
+    
+  
+
+</div>

@@ -1,0 +1,302 @@
+
+<div class="wrapper" >
+<!-- <header ng-include="'app/modules/home/header.html'"></header> -->
+ <div class="sidebar" data-color="azure" data-image="assets/img/sidebar-4.jpg">
+       <toast></toast>
+      <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="#" class="simple-text">
+                    Media Managment Engine
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="#">
+                        <i class="pe-7s-browser"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="pe-7s-config"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#/signin">
+                        <i class="pe-7s-power"></i>
+                        <p>Sign out</p>
+                    </a>
+                </li>
+
+            </ul>
+      </div>
+    </div>
+  
+
+
+<div class="main-panel">
+
+   <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-dashboard"></i>
+                            </a>
+                        </li>
+                       
+                        <li>
+                           <a href="">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                           <a href="">
+                               Account
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="#/signin">
+                                Log out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+   <div class="content">
+        <div class="container-fluid">
+        <!-- for user -->
+   <div ng-show="!admin && imgVerified"> 
+     <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-user">
+                <div class="image">
+                    <!-- <img src="{{user.img}}" alt="..."/> -->
+                </div>
+                <div class="content">
+                    <div class="author">
+                         <a href="#">
+                        <img class="avatar border-gray" src="{{user.img}}" alt="..."/>
+
+                          <h4 class="title">Name:{{user.full_name}}
+                          </h4>
+                          <hr> 
+                          <h5 class="title">Account Type:User</h5>
+                          <hr>
+                          <h5 class="title">Registration No:{{user.RegNo}}</h5>
+                          <hr>
+                          <h5 class="title">Department:{{user.department}}</h5>
+                         </a>
+                    </div>
+                   
+                </div>
+                <hr>
+                <div class="text-center">
+                   <button type="button" class="btn btn-primary" ng-click="findSimilarWrapper(imgUrl,array3)">Find Similar</button> 
+                </div>
+                <hr>
+                <div class="text-center">
+                  <button type="button" class="btn btn-primary" ng-click="getImages()">Get Images</button>  
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+          
+     </div>
+
+       <div>
+                <div class="row imagetiles">
+                    <div ng-repeat="x in img" class="col-md-3">
+                        <img src={{x}} class="img-thumbnail">
+                    </div>
+                </div>
+        </div>
+
+ </div>
+
+ <div ng-show="!admin && !imgVerified">
+
+ <div class="col-md-4"></div>
+ <div class="col-md-4" style="text-align: center;">
+  <div class="card card-user">
+   <div class="content">
+    <hr>
+     <h4>Account pending approval by Admin for more information email us at mediaEngine@gmail.com</h4>
+    <hr>
+   </div>
+  </div>  
+ </div>
+ <div class="col-md-4"></div>
+   
+ </div>
+
+<!-- for admin -->
+     <div ng-show="admin" class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-user">
+                <div class="image">
+                    <!-- <img src="{{user.img}}" alt="..."/> -->
+                </div>
+                <div class="content">
+                    <div class="author">
+                         <a href="#">
+                        <img class="avatar border-gray" src="{{user.img}}" alt="..."/>
+
+                          <h3 class="title">{{user.full_name}}
+                          </h3>
+                          <hr>
+                          <h5 class="title">Site Admin</h5>
+                          
+                        </a>
+                    </div>
+                   
+                </div>
+                <hr>
+                <div class="text-center">
+                    <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
+                    <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
+                    <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+          
+     </div>
+
+  <div ng-show="admin">    
+
+     <div class="row" style="margin: 20px">
+      <div class="col-md-4"></div>    
+        <div class="col-md-4"> 
+        <div class="card card-user" style="text-align:center">
+            <div style="padding: 20px;">
+               <div class="btn btn-block btn-success" >
+                    <span>Upload Images</span>
+                   
+               </div>
+               <hr>
+                <input type="file" id="fileButton" multiple="multiple" accept="image/*">
+               </div>
+        </div> 
+
+        </div>
+       <div class="col-md-4"></div>       
+     </div>    
+
+    <div class="row" style="margin: 20px">
+          <div class="col-md-5"></div>
+          
+          <div class="col-md-2">
+          <div class="card card-user" style="text-align:center">
+          <button type="button" class="btn btn-block btn-success" ng-click="getAllUsers()">Get All Users</button>
+          </div>
+          </div>
+
+          <div class="col-md-5"></div>
+             
+         </div>
+       
+       </div>  
+         <br>
+         <br>
+        
+
+
+       
+
+<div ng-show="
+table && admin" class="row">
+
+
+   
+   <div class="col-md-12">
+       <div class="card">
+           <div class="header">
+              <h4 class="title">All Users</h4>
+              <p class="category">Approve users to use this app from here</p>
+              
+          </div>
+          <div class="content table-responsive table-full-width">
+              <table class="table table-hover table-striped">
+                  <thead>
+                      <th><h4>ID</h4></th>
+                      <th><h4>Name</h4></th>
+                      <th><h4>RegNo</h4></th>
+                      <th><h4>Departmemt</h4></th>
+                      <th><h4>Image</h4></th>
+                      <th><h4>Approval</h4></th>
+                      
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="user in AllUsers track by $index" ng-if="$index < queueRowLimit">
+                          <td>{{$index +1 }}</td>
+                          <td>{{user.full_name}}</td>
+                          <td>{{user.regNo}}</td>
+                          <td>{{user.department}}</td>
+                          <td>
+                           <img src="{{user.img}}" class="img-rounded" alt="Cinque Terre" width="100" height="100">
+                          </td>
+                          <td>
+                           <button ng-show="!user.imgVerified" type="button" class="btn btn-primary" ng-click='detectFace(user)'>Approve</button>
+                          </td>
+
+                      </tr>
+                   
+                  </tbody>
+              </table>
+
+          </div>
+                        </div>
+                    </div>
+
+   <div class="row" style="margin: 20px">
+          <div class="col-md-5"></div>
+          
+          <div class="col-md-2">
+          <div class="card card-user" style="text-align:center">
+          <button type="button" class="btn btn-block btn-success" ng-click="showMore()">Show more</button>
+          </div>
+          </div>
+
+          <div class="col-md-5"></div>
+             
+         </div>
+
+   </div>    
+
+   </div>
+   </div> 
+
+   <footer class="footer">
+    <div class="container-fluid">
+      <p class="copyright pull-right">
+          &copy; 2017 <a href="#">Media Managment Engine</a>
+      </p>
+    </div>
+   </footer>
+
+
+   </div>
+
+</div>

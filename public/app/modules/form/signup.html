@@ -1,0 +1,58 @@
+<div class="wrapper1">
+
+ <form class="form-signin" ng-submit="signUp();  is=true " >
+    <h2>Sign Up for an Account</h2>  <h2  style="color:{{resultColor}}" ng-bind="result"></h2>
+
+      <input placeholder="Full name" id="icon_prefix" type="text" class="form-control" ng-model="full_name" ng-focus="is = false" required>
+     
+    
+     <input placeholder="Registration No" id="icon_phone" type="text" class="form-control" ng-model="registration" ng-focus="is = false" required>
+    
+
+   
+    <input placeholder="Department" id="icon_address" type="text" class="form-control" ng-model="department" ng-focus="is = false" required>
+   
+    <input placeholder="Email" id="icon_emaill" type="text" class="form-control" ng-model="email" ng-focus="is = false" required>
+    
+ 
+    <input placeholder="Password" id="password" type="password" class="form-control" ng-model="pass" ng-focus="is = false" required>
+
+  <div class="input-field col s6">
+   <div class="file-field input-field">
+   
+      <div class="btn">
+        <span> upload Image</span>
+        <input type="file" id="file" required>
+      </div>
+     <!--  <div class="file-path-wrapper">
+        <input class="file-path validate"  type="text">
+      </div> -->
+    </div>
+  </div>
+
+
+   
+
+  
+    <button type="submit" class="btn btn-lg btn-primary btn-block" style="margin-top: 20px;">Signup</button> 
+
+ <div style="margin-top: 20px" ng-show="is" class="progress">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+      
+    </div>
+  </div>
+
+  
+</form>
+ 
+
+<div ng-show="is" class="progress">
+  <div class="indeterminate"></div>
+</div>
+</div>
+
+
+
+
+
+

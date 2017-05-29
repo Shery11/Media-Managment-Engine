@@ -1,0 +1,24 @@
+{
+  "name": "ng-scrollable",
+  "version": "0.2.6",
+  "homepage": "",
+  "authors": [
+    "Alexander Eichhorn <alex@kidtsunami.com>"
+  ],
+  "description": "Superamazing scrollbars for AngularJS",
+  "main": [
+    "min/ng-scrollable.min.css",
+    "min/ng-scrollable.min.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "*"
+  }
+}
