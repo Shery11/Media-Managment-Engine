@@ -4,43 +4,96 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
      var search = user.orderByChild('email').equalTo($rootScope.val).limitToFirst(1);
      
      var albumtitle;
-     //er are going to pass these variables into findSimilar
+     //we are going to pass these variables into findSimilar
      $scope.array3 = new Array;
      var array4 = new Array;
+     var array5 = new Array;
      $scope.imgUrl;
      $scope.queueRowLimit = 5;
      $scope.table = false;
      $scope.data = $firebaseObject(search);
      $scope.auth = $firebaseAuth();
 
+     
      $scope.showMore = function(){
              $scope.queueRowLimit += 5;
      }
      
      var gallary = db.child('gallery');
      gallary.on('value', function(snapshot) {
-         snapshot.forEach(function(childSnapshot) {
-            var childData = childSnapshot.val();
-                //calling face detect on gallary 
 
-                // we need to add delay here
-             Face.faceDetect(childData.img).then(function (data){
-              
-                      if(data.data.success) {
-                        $scope.detectData = data.data.res["0"];
-                        // console.log($scope.detectData.faceId); 
-                         $scope.array3.push($scope.detectData.faceId);
-                         //we will pass this array into 
+         var obj = snapshot.val();
+         // converting obj to array
+         var array = $.map(obj, function(value, index) {
+             return [value];
+          });
+
+         console.log(array);
+
+
+
+            for(i = 0; i < array.length; i++){
+                (function(i,array){
+                    setTimeout(function(){
+
+                          Face.faceDetect(array[i].img).then(function (data){
+                
+                                if(data.data.success) {
+                                  $scope.detectData = data.data.res["0"];
+                                  // console.log($scope.detectData.faceId); 
+                                   $scope.array3.push($scope.detectData.faceId);
+                                   //we will pass this array into 
+                                  
+                                  updateGallary(childSnapshot.key,$scope.detectData.faceId);         
+                                 } else {
+                                 //create error message
+                                   console.log("Image cannot be verified");
+                                 }
+
+                                console.log($scope.array3);
+                         });
                         
-                        updateGallary(childSnapshot.key,$scope.detectData.faceId);         
-                       } else {
-                       //create error message
-                         console.log("Image cannot be verified");
-                       }
+                        console.log(array[i].img);
+                    }, 1000 * i);
+                }(i,array));
+            } 
 
-                       console.log($scope.array3);
-                });
-            });
+           // snapshot.forEach(function(childSnapshot) {
+
+
+           //    var childData = childSnapshot.val();
+           //     console.log(childData);
+              
+           //    childData.forEach(function(data){
+           //        array5.push(data);
+           //    }); 
+
+
+
+           //       // console.log(array5);
+
+           //      //calling face detect on gallary 
+               
+           //     // we need to add delay here
+           //     // Face.faceDetect(childData.img).then(function (data){
+                
+           //     //          if(data.data.success) {
+           //     //            $scope.detectData = data.data.res["0"];
+           //     //            // console.log($scope.detectData.faceId); 
+           //     //             $scope.array3.push($scope.detectData.faceId);
+           //     //             //we will pass this array into 
+                          
+           //     //            updateGallary(childSnapshot.key,$scope.detectData.faceId);         
+           //     //           } else {
+           //     //           //create error message
+           //     //             console.log("Image cannot be verified");
+           //     //           }
+
+           //     //           console.log($scope.array3);
+           //     //    });
+           //    });
+      
+
       });
       
      
@@ -73,7 +126,7 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
      user.on('value',function(users){
 
            $scope.AllUsers = users.val();
-           console.log(users.val());
+           
        })
 
      $scope.getAllUsers = function(){
@@ -267,7 +320,6 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
                        content: percentage
                      }); 
 
-                    
                 },
                 function error(err){
 

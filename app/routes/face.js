@@ -11,8 +11,6 @@ router.post('/detect', function(req, res){
 	
 
   var attri = req.body;
-  // console.log(attri.imageURL);
-
   //this will return the faceid and if it returns an error then prompt user to change his profile picture
   client.face.detect({
        url:attri.imageURL,

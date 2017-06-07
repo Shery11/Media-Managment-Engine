@@ -30,7 +30,7 @@ app.controller('homeCtrl', function ($scope,$rootScope,$firebaseAuth,$location,$
   $scope.afterSignUp = function(){
 
 
-               console.log("UPload caalled");
+               console.log("Upload caalled");
                var filename= selectedFile.name; 
 
                var storageRef = firebase.storage().ref('/annas/'+ filename);
@@ -56,6 +56,8 @@ app.controller('homeCtrl', function ($scope,$rootScope,$firebaseAuth,$location,$
                 }, function(error) {
                   // Handle unsuccessful uploads
                 }, function() {
+
+                      console.log("After sign is called");
                       // Handle successful uploads on complete
                       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                       $scope.downloadURL = uploadTask.snapshot.downloadURL;
@@ -124,9 +126,7 @@ $scope.signIn = function(){
   }
 
   $scope.signUp = function(){
-
-
-           $scope.auth.$createUserWithEmailAndPassword($scope.email, $scope.pass).then(
+      $scope.auth.$createUserWithEmailAndPassword($scope.email, $scope.pass).then(
             function(firebaseUser){
                     // logic after sign up 
                     $scope.result = "user signed up with following email" + firebaseUser.email + firebaseUser.uid;
