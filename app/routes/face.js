@@ -34,22 +34,6 @@ router.post('/detect', function(req, res){
 
 });
 
-//adds face to face list takes url of image and add it to facelist
-router.post('/addface', function(req, res){
-   
-     var attri = req.body;
-     
-    client.face.faceList.addFace("123456789",{
-             url:attri.imageURL
-    }).then(function(response){
-   
-        console.log(response);
-        res.json({success:true,res:response}); 
-    });
-
-  
-
-});
 
 router.post('/findSimilar', function(req, res){
    

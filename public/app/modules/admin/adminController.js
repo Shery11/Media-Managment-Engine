@@ -2,6 +2,7 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
      var db = firebase.database().ref();
      var user = db.child('users');
      var search = user.orderByChild('email').equalTo($rootScope.val).limitToFirst(1);
+     var gallary = db.child('gallery');
      
      var albumtitle;
      //we are going to pass these variables into findSimilar
@@ -11,90 +12,84 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
      $scope.imgUrl;
      $scope.queueRowLimit = 5;
      $scope.table = false;
+     $scope.disable = false;
+     $scope.searchBar = false;
      $scope.data = $firebaseObject(search);
      $scope.auth = $firebaseAuth();
 
-     
+     // this is for the show more button 
      $scope.showMore = function(){
-             $scope.queueRowLimit += 5;
+        $scope.queueRowLimit += 5;
      }
-     
+
      var gallary = db.child('gallery');
-     gallary.on('value', function(snapshot) {
 
-         var obj = snapshot.val();
-         // converting obj to array
-         var array = $.map(obj, function(value, index) {
-             return [value];
-          });
+      // make images ready for the
+      $scope.readyImages = function() {
 
-         console.log(array);
+         var array = [];
 
+        gallary.once('value', function(snapshot) {
 
+               var obj = snapshot.val();
+               // converting obj to array
+               array = $.map(obj, function(value, index) {
+                   return [value];
+                });
 
-            for(i = 0; i < array.length; i++){
-                (function(i,array){
-                    setTimeout(function(){
+               console.log(array);
+               var i=0;
 
-                          Face.faceDetect(array[i].img).then(function (data){
-                
-                                if(data.data.success) {
-                                  $scope.detectData = data.data.res["0"];
-                                  // console.log($scope.detectData.faceId); 
-                                   $scope.array3.push($scope.detectData.faceId);
-                                   //we will pass this array into 
-                                  
-                                  updateGallary(childSnapshot.key,$scope.detectData.faceId);         
-                                 } else {
-                                 //create error message
-                                   console.log("Image cannot be verified");
-                                 }
+                snapshot.forEach(function(data){
+                     
+                     array[i].key = data.key;
+                     i++;
 
-                                console.log($scope.array3);
-                         });
-                        
-                        console.log(array[i].img);
-                    }, 1000 * i);
-                }(i,array));
-            } 
-
-           // snapshot.forEach(function(childSnapshot) {
-
-
-           //    var childData = childSnapshot.val();
-           //     console.log(childData);
-              
-           //    childData.forEach(function(data){
-           //        array5.push(data);
-           //    }); 
+                })
 
 
 
-           //       // console.log(array5);
+                 looper(array);
 
-           //      //calling face detect on gallary 
-               
-           //     // we need to add delay here
-           //     // Face.faceDetect(childData.img).then(function (data){
-                
-           //     //          if(data.data.success) {
-           //     //            $scope.detectData = data.data.res["0"];
-           //     //            // console.log($scope.detectData.faceId); 
-           //     //             $scope.array3.push($scope.detectData.faceId);
-           //     //             //we will pass this array into 
-                          
-           //     //            updateGallary(childSnapshot.key,$scope.detectData.faceId);         
-           //     //           } else {
-           //     //           //create error message
-           //     //             console.log("Image cannot be verified");
-           //     //           }
+                  
+        });
 
-           //     //           console.log($scope.array3);
-           //     //    });
-           //    });
-      
+      }
 
-      });
+
+      var looper = function(array){
+
+        console.log("looper is called");
+             
+        for(i = 0; i < array.length; i++){
+            (function(i,array){
+                setTimeout(function(){
+
+                   console.log(array[i]);
+
+                      Face.faceDetect(array[i].img).then(function (data){
+            
+                            if(data.data.success) {
+                               $scope.detectData = data.data.res["0"];
+                               // console.log($scope.detectData.faceId); 
+                               $scope.array3.push($scope.detectData.faceId);
+                               //we will pass this array into 
+                             
+                               updateGallary(array[i].key,$scope.detectData.faceId);         
+                             } else {
+                             //create error message
+                               console.log("Image cannot be verified");
+                             }
+
+                            // console.log($scope.array3);
+                     });
+                    
+                    // console.log(array[i].img);
+                }, 3000 * i);
+            }(i,array));
+        } 
+ 
+       }
       
      
        var updateGallary = function(qid,fid){
@@ -102,7 +97,7 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
              pic.update({
                 faceId: fid
               });
-        }    
+        }
 
    
      //checks if user is admin or not
@@ -139,22 +134,24 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
         $scope.img; 
 
         $scope.getImages = function(){
-               var data;                      
+               var data; 
+               $scope.searchBar = true;                     
           user.orderByChild('email').equalTo($rootScope.val).once('value').then(function(snapshot) {
        
               snapshot.forEach(function(userSnapshot) {
-                data = userSnapshot.val();
-                 $scope.img = data.images;
+                  data = userSnapshot.val();
+                  $scope.img = data.images;
                 })
 
-              console.log($scope.img);  
+              console.log($scope.img); 
+
+
+
 
                    
           });
 
-          
-        
-        }
+       }
        var updateimgVerified = function(email){
 
             console.log(email)
@@ -192,9 +189,8 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
             } else {
                 //create error message
                 ngToast.create({
-                  content: 'In valid Image',
-                  className:'danger'
-                });  
+                  content: 'In valid Image'
+               });  
                 console.log("Image cannot be verified");
              }
          });
@@ -222,10 +218,7 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
                       //create error message
                       console.log("Error");
                   }
-
-
-
-            });
+             });
 
           }
 
@@ -251,12 +244,26 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
                                     console.log(array4.length);
 
                                     // this saves the urls of matched facees in the user db
-                                    saveUrl(array4);
+                                    // saveUrl(array4);
 
 
-                                   
+                                       // this removes duplicate from the array
+                                          array4.sort();
+                                          var i = 0;
+
+                                          while(i < array4.length) {
+                                              if(array4[i] === array4[i+1]) {
+                                                  array4.splice(i+1,1);
+                                              }
+                                              else {
+                                                  i += 1;
+                                              }
+                                          }
+
+
+                                          saveUrl(array4);
                                    })
-
+                                    
                                     console.log("Called");     
                                     ngToast.create('You Have '+array4.length+' Picture(s)' );
 
@@ -274,9 +281,9 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
        // this saves the url array in to user's account
        var saveUrl = function(arr){
 
-            user.orderByChild('email').equalTo($rootScope.val).once("child_added", function(snapshot){
-                snapshot.ref.update({  images: arr })
-            })
+          user.orderByChild('email').equalTo($rootScope.val).once("child_added", function(snapshot){
+              snapshot.ref.update({  images: arr })
+          });
 
        }
 
@@ -295,19 +302,156 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
       $scope.drop = function(){
         $(".dropdown-button").dropdown();
       }
+
+     
+
+
+    var images = [];
     //Listen for file selection
     fileButton.addEventListener('change', function(e){ 
-
-        //Get files
-        for (var i = 0; i < e.target.files.length; i++) {
+         
+         for (var i = 0; i < e.target.files.length; i++) {
             var imageFile = e.target.files[i];
+            console.log(imageFile);
 
-            uploadImageAsPromise(imageFile,i);
-        }
+            images.push(imageFile);
+         }
+      
+    
     });
 
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+// =======================================================================================================================
+
+    $scope.searchByName = function(){
+
+      if($scope.search){
+        
+        console.log($scope.search);
+
+      user.orderByChild('email').equalTo($rootScope.val).once('value').then(function(snapshot) {
+       
+        snapshot.forEach(function(userSnapshot) {
+          var data = userSnapshot.val();
+           
+           // now we have the immages
+           console.log(data); 
+
+           console.log(data.images); 
+
+
+            user.orderByChild('full_name').equalTo($scope.search).once('value').then(function(snapshot) {
+                   
+                    snapshot.forEach(function(userSnapshot) {
+                      var userData = userSnapshot.val();
+                       // we have the user
+                       
+                       console.log(userData);
+
+
+                          Face.faceDetect(userData.img).then(function (data){
+                          
+                              if(data.data.success) {
+                                   detectData = data.data.res["0"];
+                                   
+
+                                   console.log(detectData);
+
+                                  
+                            } else {
+                                  //create error message
+                                  console.log("Error");
+                              }
+                         });
+
+
+
+
+
+
+                          
+                       
+
+                   });
+
+                     
+            });
+
+
+
+       });
+
+         
+     });
+        
+
+       }else{
+
+       ngToast.create({
+           content:'Enter Some Search words'
+         });
+
+      }
+      
+    }
+
+    $scope.upload = function(){
+
+      
+      if(images.length == 0){
+
+         ngToast.create({
+           content:'Select some images'
+         });
+      
+      }else{
+
+
+        images.forEach(function(image){
+          console.log(image);
+          uploadImageAsPromise(image);
+        })
+
+     } 
+ 
+    }
+
     //Handle waiting to upload each file using promise
-    function uploadImageAsPromise (imageFile,i) {
+    function uploadImageAsPromise(imageFile) {
         return new Promise(function (resolve, reject) {
             var storageRef = firebase.storage().ref("gallery/event1/"+imageFile.name);
             //Upload file
@@ -316,9 +460,7 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
             task.on('state_changed',
                 function progress(snapshot){
                     var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-                     ngToast.create({
-                       content: percentage
-                     }); 
+                    
 
                 },
                 function error(err){
@@ -329,7 +471,9 @@ app.controller('adminCtrl', function ($scope,$firebaseObject,$rootScope,$firebas
                 function complete(){
                     var downloadURL = task.snapshot.downloadURL;
                     
-                    console.log("Image Uploaded")
+                     ngToast.create({
+                       content: 'Image uploaded'
+                     }); 
 
                     firebase.database().ref().child('gallery/').push().set({
                        img:downloadURL,

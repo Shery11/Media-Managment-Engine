@@ -78,6 +78,18 @@
 
    <div class="content">
         <div class="container-fluid">
+         
+       <div class="row">
+         <div class="col-md-2"></div>
+         <div class="col-md-8">
+           <div class="card card-user">
+            <div class="text-center">
+             <button style="width: 100%" class="btn btn-block btn-success" ng-click="readyImages()" ng-disabled='disbale' >Ready images</button>
+            </div>
+           </div> 
+         </div>
+         <div class="col-md-2"></div> 
+       </div>
         <!-- for user -->
    <div ng-show="!admin && imgVerified"> 
      <div class="row">
@@ -97,7 +109,7 @@
                           <hr> 
                           <h5 class="title">Account Type:User</h5>
                           <hr>
-                          <h5 class="title">Registration No:{{user.RegNo}}</h5>
+                          <h5 class="title">Registration No:{{user.regNo}}</h5>
                           <hr>
                           <h5 class="title">Department:{{user.department}}</h5>
                          </a>
@@ -106,11 +118,11 @@
                 </div>
                 <hr>
                 <div class="text-center">
-                   <button type="button" class="btn btn-primary" ng-click="findSimilarWrapper(imgUrl,array3)">Find Similar</button> 
+                   <button type="button" class="btn btn-primary" ng-click="findSimilarWrapper(imgUrl,array3)" >Find Similar</button> 
                 </div>
                 <hr>
                 <div class="text-center">
-                  <button type="button" class="btn btn-primary" ng-click="getImages()">Get Images</button>  
+                  <button type="button" class="btn btn-primary" ng-click="getImages()" >Get Images</button>  
                 </div>
             </div>
         </div>
@@ -118,13 +130,29 @@
           
      </div>
 
-       <div>
-                <div class="row imagetiles">
-                    <div ng-repeat="x in img" class="col-md-3">
-                        <img src={{x}} class="img-thumbnail">
-                    </div>
-                </div>
+        <div>
+          <div class="row imagetiles">
+              <div ng-repeat="x in img track by $index" class="col-md-3">
+                  <img src={{x}} class="img-thumbnail">
+                  <div class="card card-user" style=" margin-top: 4px;"> <a href="{{x}}" download><button style="width: 100%;" class="btn btn-primary">Download</button></a></div>
+              </div>
+          </div>
         </div>
+
+
+    
+    <div class="row" ng-show="searchBar">
+         <div class="col-md-2"></div>
+         <div class="col-md-8">
+           <div class="card card-user">
+            <div class="text-center">
+             <input type="text" name="search" placeholder="Enter name" class="form-control" ng-model="search">
+            </div>
+           </div> 
+         </div>
+         <div class="col-md-2"><button class="btn btn-primary" ng-click="searchByName()">submit</button></div>
+      </div>
+
 
  </div>
 
@@ -185,29 +213,30 @@
         <div class="col-md-4"> 
         <div class="card card-user" style="text-align:center">
             <div style="padding: 20px;">
-               <div class="btn btn-block btn-success" >
+               <button class="btn btn-block btn-success" ng-click='upload()' >
                     <span>Upload Images</span>
-                   
-               </div>
+               </button>
                <hr>
                 <input type="file" id="fileButton" multiple="multiple" accept="image/*">
-               </div>
+            </div>
         </div> 
 
         </div>
        <div class="col-md-4"></div>       
      </div>    
 
-    <div class="row" style="margin: 20px">
-          <div class="col-md-5"></div>
+    <div class="row">
+          <div class="col-md-2"></div>
           
-          <div class="col-md-2">
-          <div class="card card-user" style="text-align:center">
-          <button type="button" class="btn btn-block btn-success" ng-click="getAllUsers()">Get All Users</button>
-          </div>
+          <div class="col-md-8">
+            <div class="card card-user">
+              <div class="text-center">
+               <button type="button" class="btn btn-block btn-success" ng-click="getAllUsers()">Get All Users</button>
+              </div>
+            </div>
           </div>
 
-          <div class="col-md-5"></div>
+          <div class="col-md-2"></div>
              
          </div>
        
@@ -275,7 +304,7 @@ table && admin" class="row">
 
           <div class="col-md-5"></div>
              
-         </div>
+    </div>
 
    </div>    
 

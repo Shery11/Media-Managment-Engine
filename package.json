@@ -4,6 +4,7 @@
   "description": "Firebase 3.0 Complete Authentication module compromises of Login &amp; Signup.\r <br /> By : <b> Moeid Saleem Khan ( Team Leader - ADS© / ADS Academy )  </b> @moeidsaleem",
   "main": "server.js",
   "dependencies": {
+    "angular-local-storage": "^0.6.0",
     "body-parser": "^1.17.1",
     "cognitive-services": "^0.1.1",
     "express": "^4.14.0",

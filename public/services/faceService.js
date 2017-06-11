@@ -11,10 +11,7 @@ angular.module('faceServices', [])
              return $http.post('/face/detect', data);
         };
 
-        faceFactory.addfacetoList = function (faceData) {
-            var data = {imageURL:faceData}
-            return $http.post('/face/addface',data);
-        };
+       
 
         faceFactory.findSimilar = function (faceData) { 
             return $http.post('/face/findSimilar',faceData);

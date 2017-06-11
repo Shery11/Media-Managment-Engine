@@ -20,7 +20,8 @@ app.config(['$qProvider', function ($qProvider) {
 
  app.config(['ngToastProvider', function(ngToast) {
     ngToast.configure({
-       horizontalPosition: 'left'
+       horizontalPosition: 'left',
+       verticalPosition: 'bottom'
       
     });
   }]);
